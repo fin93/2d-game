@@ -12,16 +12,6 @@ TEXT_COLOUR = (68, 68, 68)
 font = pygame.font.SysFont('Arial', 50, True)
 text = font.render('play', True, TEXT_COLOUR)
 
-def load_map(filename):
-    f = open(filename + '.txt', 'r')
-    data = f.read()
-    f.close()
-    data = data.split('\n')
-    game_map = []
-    for line in data:
-        game_map.append(list(line))
-    return game_map
-
 def change_text(text):
     fon = pygame.font.SysFont('Arial', 50, True)
     return fon.render(text, True, TEXT_COLOUR)
