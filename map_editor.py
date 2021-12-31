@@ -15,8 +15,6 @@ grass_orig = pygame.image.load('Assets/block/grass.jpg')
 grass_block = pygame.transform.scale(grass_orig, (50, 50))
 dirt_orig = pygame.image.load('Assets/block/dirt_.jpg')
 dirt_block = pygame.transform.scale(dirt_orig, (50, 50))
-sky_orig = pygame.image.load('Assets/block/sky.jpg')
-sky_block = pygame.transform.scale(sky_orig, (50, 50))
 
 def load_map(filename):
     f = open(filename + '.txt', 'r')
