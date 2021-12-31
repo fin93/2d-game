@@ -11,8 +11,6 @@ MENU_ITEMS_COLOUR = (100, 100, 100)
 TEXT_COLOUR = (68, 68, 68)
 font = pygame.font.SysFont('Arial', 50, True)
 text = font.render('play', True, TEXT_COLOUR)
-global animation_frames
-animation_frames = {}
 
 def load_map(filename):
     f = open(filename + '.txt', 'r')
@@ -23,13 +21,6 @@ def load_map(filename):
     for line in data:
         game_map.append(list(line))
     return game_map
-
-def load_animation(path, frame_duration):
-    global animation_frames
-    animation_name = path.split('\\')[-1]
-    print(animation_name)
-
-
 
 def change_text(text):
     fon = pygame.font.SysFont('Arial', 50, True)
