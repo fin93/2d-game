@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
-map_name = "map_1"
+map_name = "full_map"
 active_edit = '0'
 sky_color = (124, 124, 224)
 TEXT_COLOUR = (68, 68, 68)
@@ -16,6 +16,33 @@ grass_block = pygame.transform.scale(grass_orig, (50, 50))
 dirt_orig = pygame.image.load('Assets/block/dirt_.jpg')
 dirt_block = pygame.transform.scale(dirt_orig, (50, 50))
 
+def write_map(filename, current_map):
+    f = open(filename + '.txt', 'w')
+    for i in range(12):
+        for j in range(16):
+            f.write(current_map[i][j])
+        f.write('\n')
+    f.close()
+
+def load_full_map(filename, map_number):
+    f = open(filename + '.txt', 'r')
+    data = f.read()
+    f.close()
+    data = data.split('nn')
+    game_map = []
+    for line in data:
+        game_map.append(list(line))
+    game_map = game_map[map_number]
+    temp_game_map = ""
+    for i in game_map:
+        temp_game_map = temp_game_map + str(i)
+    actual_data = temp_game_map.split('\n')
+    acc_game_map = []
+    for lin in actual_data:
+        acc_game_map.append(list(lin))
+    return acc_game_map
+    
+
 def load_map(filename):
     f = open(filename + '.txt', 'r')
     data = f.read()
@@ -26,15 +53,9 @@ def load_map(filename):
         game_map.append(list(line))
     return game_map
 
-game_map = load_map(f'maps/{map_name}')
+game_map = load_full_map(f'maps/{map_name}', 0)
 
-def write_map(filename):
-    f = open(filename + '.txt', 'w')
-    for i in range(12):
-        for j in range(16):
-            f.write(game_map[i][j])
-        f.write('\n')
-    f.close()
+
 
 
 def display_game_map(game_map):
@@ -63,7 +84,7 @@ while True:
                 active_edit = '2'
                 text = font.render('active: grass', True, TEXT_COLOUR)
             if event.key == pygame.K_w:
-                write_map(f'maps/{map_name}')
+                write_map(f'maps/{map_name}', game_map)
                 text = font.render('written', True, TEXT_COLOUR)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
