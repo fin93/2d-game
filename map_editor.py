@@ -2,6 +2,7 @@ import pygame
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
+map_level_number = 0
 map_name = "full_map"
 active_edit = '0'
 sky_color = (124, 124, 224)
@@ -10,6 +11,7 @@ font = pygame.font.SysFont('Arial', 20, True)
 screen.fill(sky_color)
 text = font.render('active: sky', True, TEXT_COLOUR)
 is_on = False
+map_to_write = 'map_1'
 
 grass_orig = pygame.image.load('Assets/block/grass.jpg')
 grass_block = pygame.transform.scale(grass_orig, (50, 50))
@@ -40,9 +42,10 @@ def load_full_map(filename, map_number):
     acc_game_map = []
     for lin in actual_data:
         acc_game_map.append(list(lin))
-    return acc_game_map
-    
-
+    acc_game_map.remove([])
+    print(acc_game_map)
+    return acc_game_map      
+            
 def load_map(filename):
     f = open(filename + '.txt', 'r')
     data = f.read()
@@ -53,9 +56,7 @@ def load_map(filename):
         game_map.append(list(line))
     return game_map
 
-game_map = load_full_map(f'maps/{map_name}', 0)
-
-
+game_map = load_full_map(f'maps/{map_name}', map_level_number)
 
 
 def display_game_map(game_map):
@@ -84,7 +85,7 @@ while True:
                 active_edit = '2'
                 text = font.render('active: grass', True, TEXT_COLOUR)
             if event.key == pygame.K_w:
-                write_map(f'maps/{map_name}', game_map)
+                write_map(f'maps/{map_to_write}', game_map)
                 text = font.render('written', True, TEXT_COLOUR)
                 
         if event.type == pygame.MOUSEBUTTONDOWN:
