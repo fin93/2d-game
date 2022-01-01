@@ -12,6 +12,8 @@ screen.fill(sky_color)
 text = font.render('active: sky', True, TEXT_COLOUR)
 is_on = False
 map_to_write = 'map_1'
+level_to_display = 'level: 1'
+display_which_level = font.render(level_to_display, True, TEXT_COLOUR)
 
 grass_orig = pygame.image.load('Assets/block/grass.jpg')
 grass_block = pygame.transform.scale(grass_orig, (50, 50))
@@ -43,7 +45,6 @@ def load_full_map(filename, map_number):
     for lin in actual_data:
         acc_game_map.append(list(lin))
     acc_game_map.remove([])
-    print(acc_game_map)
     return acc_game_map      
             
 def load_map(filename):
@@ -87,7 +88,16 @@ while True:
             if event.key == pygame.K_w:
                 write_map(f'maps/{map_to_write}', game_map)
                 text = font.render('written', True, TEXT_COLOUR)
-                
+            if event.key == pygame.K_RIGHT:
+                map_level_number += 1
+                game_map = load_full_map('maps/full_map', map_level_number)
+                level_to_display = f'level: {map_level_number + 1}'
+                display_which_level = font.render(level_to_display, True, TEXT_COLOUR)
+            elif event.key == pygame.K_LEFT:
+                map_level_number -= 1
+                game_map = load_full_map('maps/full_map', map_level_number)
+                level_to_display = f'level: {map_level_number + 1}'
+                display_which_level = font.render(level_to_display, True, TEXT_COLOUR)
         if event.type == pygame.MOUSEBUTTONDOWN:
             is_on = True
         if event.type == pygame.MOUSEBUTTONUP:
@@ -99,4 +109,5 @@ while True:
 
     display_game_map(game_map)
     screen.blit(text, (20, 20))
+    screen.blit(display_which_level, (20, 50))
     pygame.display.update()
