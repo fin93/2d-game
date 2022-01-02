@@ -22,7 +22,7 @@ y_vel = 0
 player_x_vel = 0
 
 print(player.get_width(), player.get_height())
-player_rect = pygame.Rect(player_x, player_y, player.get_width() + 5, player.get_height() + 5)
+player_rect = pygame.Rect(player_x, player_y, player.get_width(), player.get_height())
 test_rect = pygame.Rect(100, 100, 50, 50)
 BG_COLOUR = (124, 124, 124)
 screen.fill(BG_COLOUR)
@@ -58,8 +58,9 @@ def display_game_map(game_map):
                 screen.blit(dirt_block, (j * 50, i * 50))
             if game_map[i][j] == '2':
                 screen.blit(grass_block, (j * 50, i * 50))
-            if game_map[i][j] != '0':
                 block_rects.append(pygame.Rect(j * 50, i * 50, 50, 50))
+            if game_map[i][j] != '0':
+                pass
     return block_rects
     
 f = display_game_map(game_map)
@@ -71,6 +72,31 @@ def collides(p_rect, block_list):
             hit_list.append(block)
     return hit_list
 
+def where(player, block_list, direction, up_down):
+    collisions = {'top':False,'bottom':False,'right':False,'left':False}
+    player.x += direction
+    block_hit_list = collides(player, block_list)
+    block_hit_list = collides(player, block_list)
+    if len(block_hit_list) != 0:
+        for block in block_hit_list:
+            if direction > 0:
+                player.right = block.left
+                collisions['right'] = True
+            elif direction < 0:
+                player.left = block.right
+                collisions['left'] = True
+    player.y += up_down
+    block_hit_list = collides(player, block_list)
+    if len(block_hit_list) != 0:
+        for block in block_list:
+            if up_down > 0:
+                player.bottom = block.top
+                collisions['bottom'] = True
+            elif up_down < 0:
+                player.top = block.bottom
+                collisions['top'] = True
+    
+    return player, collisions
 
 
 def jump(vel):
@@ -99,7 +125,7 @@ while True:
             if event.key == pygame.K_SPACE:
                 y_vel = jump(y_vel)
     
-    y_vel += 0.2
+    
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player_x_vel = -2 
@@ -109,12 +135,14 @@ while True:
         player_x_vel = 0
     if y_vel > 17:
         y_vel = 17
-    where(player_rect, f, player_x_vel, y_vel)
-    player_y += y_vel
+    player_rect, collisions = where(player_rect, f, player_x_vel, y_vel)
+    
+    if not collisions['bottom']:
+        y_vel += 0.2
+        player_y += y_vel
+    
     player_x += player_x_vel
-    player_rect.x = player_x
-    player_rect.y = player_y
-
+    player_rect.x, player_rect.y = player_x, player_y
     
     screen.blit(player, (player_x, player_y))
     pygame.display.update()
