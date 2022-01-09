@@ -18,7 +18,7 @@ number_of_levels = 0
 
 grass_orig = pygame.image.load('Assets/block/grass.jpg')
 grass_block = pygame.transform.scale(grass_orig, (50, 50))
-dirt_orig = pygame.image.load('Assets/block/dirt.jpg')
+dirt_orig = pygame.image.load('Assets/block/dirt_.jpg')
 dirt_block = pygame.transform.scale(dirt_orig, (50, 50))
 
 def write_map(filename, current_map):
